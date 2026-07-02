@@ -501,6 +501,13 @@ function themeVar(name) {
 
 function renderDashboard(stats) {
   lastStats = stats;
+  const totalTickets = Object.values(stats.by_status || {}).reduce((sum, n) => sum + n, 0);
+  if (totalTickets === 0) {
+    Object.values(charts).forEach((c) => c && c.destroy());
+    charts = {};
+    dashboardArea.innerHTML = '<div class="locked">No tickets yet — the dashboard fills in once tickets come in.</div>';
+    return;
+  }
   if (!dashboardArea.querySelector("#chart-category")) {
     dashboardArea.innerHTML = `
       <div class="panel dashboard">
@@ -508,6 +515,7 @@ function renderDashboard(stats) {
         <div class="chart-box"><canvas id="chart-priority"></canvas></div>
         <div class="chart-box"><canvas id="chart-status"></canvas></div>
       </div>`;
+    charts = {};
   }
   const surface = themeVar("--surface");
   const inkSecondary = themeVar("--ink-secondary");
