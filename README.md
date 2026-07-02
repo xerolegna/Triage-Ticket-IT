@@ -1,7 +1,14 @@
 # Patchworkz — AI-Powered IT Ticket Triage
 
+**Live demo: [patchworkz.onrender.com](https://patchworkz.onrender.com)**
+(hosted on Render's free tier — the first request after a period of inactivity
+can take 30–50s to wake up, and the SQLite database resets on redeploy)
+
 A helpdesk ticket system where Claude automatically categorizes incoming tickets,
 assigns a priority, and drafts a suggested first response based on your knowledge base.
+Staff log in to view the ticket queue, a live dashboard, and move tickets through
+an open → in progress → resolved workflow. New tickets also trigger an email
+notification with the AI-drafted reply for an agent to review.
 
 Built with **FastAPI + SQLite + Claude API** and a vanilla HTML/JS frontend.
 No build tools required — clone, install, run.
@@ -11,8 +18,12 @@ No build tools required — clone, install, run.
 - REST API design (FastAPI, Pydantic validation)
 - Database persistence (SQLite)
 - LLM integration with structured JSON outputs (Anthropic API)
+- JWT authentication (password hashing, protected routes)
+- Data visualization (Chart.js dashboard from aggregated API data)
+- Email integration (SMTP notifications, graceful degradation on failure)
 - Async Python, environment-based config, graceful error handling
-- A working frontend that consumes your own API
+- Responsive, light/dark-mode frontend that consumes your own API
+- Deployed to a live URL (Render)
 
 ## Quick start
 
@@ -24,9 +35,10 @@ source venv/bin/activate        # Windows: venv\Scripts\activate
 # 2. Install dependencies
 pip install -r requirements.txt
 
-# 3. Configure your API key
+# 3. Configure environment variables
 cp .env.example .env
-# then edit .env and paste your key from https://console.anthropic.com
+# then edit .env: your Anthropic key, a random JWT secret, and (optionally)
+# Gmail SMTP details for email notifications — see comments in .env.example
 
 # 4. Run it
 uvicorn app.main:app --reload
@@ -43,10 +55,12 @@ ticket-triage/
 ├── app/
 │   ├── main.py            # FastAPI app + routes
 │   ├── database.py        # SQLite helpers
+│   ├── auth.py            # JWT + password hashing for staff accounts
 │   ├── claude_service.py  # Claude API call + JSON parsing
+│   ├── email_service.py   # SMTP notification on new ticket
 │   └── knowledge_base.py  # Your IT knowledge base (edit me!)
 ├── static/
-│   └── index.html         # Frontend (form + live ticket board)
+│   └── index.html         # Frontend (form, staff login, dashboard, queue)
 ├── requirements.txt
 ├── .env.example
 └── README.md
@@ -70,13 +84,13 @@ The response is validated and stored with the ticket. If the API call fails,
 the ticket is still saved with category `unclassified` — the system degrades
 gracefully instead of crashing.
 
-## Roadmap (build these next, one per week)
+## Roadmap (shipped)
 
-1. **Auth** — add user accounts with JWT (fastapi-users or roll your own)
-2. **Dashboard** — ticket volume by category/priority (Chart.js)
-3. **Status workflow** — open → in progress → resolved, with an update endpoint
-4. **Email notifications** — send the suggested response as a draft (smtplib)
-5. **Deploy** — Render or Railway free tier, then put the live URL on your resume
+1. ✅ **Auth** — JWT-based staff accounts, rolled by hand (`auth.py`)
+2. ✅ **Dashboard** — ticket volume by category/priority/status (Chart.js)
+3. ✅ **Status workflow** — open → in progress → resolved, with an update endpoint
+4. ✅ **Email notifications** — AI-suggested response emailed to a support inbox as a draft (smtplib)
+5. ✅ **Deploy** — live on [Render's free tier](https://patchworkz.onrender.com)
 
 ## Notes
 
