@@ -21,6 +21,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 from app import auth, database
 from app.claude_service import triage_ticket
+from app.email_service import send_ticket_notification
 
 app = FastAPI(title="Patchworkz", version="0.1.0")
 
@@ -74,7 +75,7 @@ def create_ticket(ticket: TicketIn) -> dict:
     triage = triage_ticket(
         ticket.requester_name, ticket.subject, ticket.description
     )
-    return database.insert_ticket(
+    created = database.insert_ticket(
         requester_name=ticket.requester_name,
         requester_email=ticket.requester_email,
         subject=ticket.subject,
@@ -84,6 +85,8 @@ def create_ticket(ticket: TicketIn) -> dict:
         suggested_response=triage["suggested_response"],
         triage_reasoning=triage["reasoning"],
     )
+    send_ticket_notification(created)
+    return created
 
 
 @app.get("/api/tickets")
