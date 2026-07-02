@@ -24,7 +24,16 @@ CREATE TABLE IF NOT EXISTS tickets (
     suggested_response TEXT,
     triage_reasoning   TEXT
 );
+
+CREATE TABLE IF NOT EXISTS agents (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    created_at      TEXT    NOT NULL DEFAULT (datetime('now')),
+    username        TEXT    NOT NULL UNIQUE,
+    password_hash   TEXT    NOT NULL
+);
 """
+
+VALID_STATUSES = {"open", "in_progress", "resolved"}
 
 
 @contextmanager
@@ -90,5 +99,54 @@ def get_ticket(ticket_id: int) -> dict | None:
     with get_db() as db:
         row = db.execute(
             "SELECT * FROM tickets WHERE id = ?", (ticket_id,)
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def update_ticket_status(ticket_id: int, status: str) -> dict | None:
+    with get_db() as db:
+        db.execute(
+            "UPDATE tickets SET status = ? WHERE id = ?", (status, ticket_id)
+        )
+        row = db.execute(
+            "SELECT * FROM tickets WHERE id = ?", (ticket_id,)
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def ticket_stats() -> dict:
+    with get_db() as db:
+        by_category = db.execute(
+            "SELECT category, COUNT(*) AS count FROM tickets GROUP BY category"
+        ).fetchall()
+        by_priority = db.execute(
+            "SELECT priority, COUNT(*) AS count FROM tickets GROUP BY priority"
+        ).fetchall()
+        by_status = db.execute(
+            "SELECT status, COUNT(*) AS count FROM tickets GROUP BY status"
+        ).fetchall()
+        return {
+            "by_category": {r["category"]: r["count"] for r in by_category},
+            "by_priority": {r["priority"]: r["count"] for r in by_priority},
+            "by_status": {r["status"]: r["count"] for r in by_status},
+        }
+
+
+def create_agent(username: str, password_hash: str) -> dict:
+    with get_db() as db:
+        cur = db.execute(
+            "INSERT INTO agents (username, password_hash) VALUES (?, ?)",
+            (username, password_hash),
+        )
+        row = db.execute(
+            "SELECT * FROM agents WHERE id = ?", (cur.lastrowid,)
+        ).fetchone()
+        return dict(row)
+
+
+def get_agent_by_username(username: str) -> dict | None:
+    with get_db() as db:
+        row = db.execute(
+            "SELECT * FROM agents WHERE username = ?", (username,)
         ).fetchone()
         return dict(row) if row else None

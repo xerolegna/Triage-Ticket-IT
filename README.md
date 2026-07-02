@@ -1,4 +1,4 @@
-# TriageDesk — AI-Powered IT Ticket Triage
+# Patchworkz — AI-Powered IT Ticket Triage
 
 A helpdesk ticket system where Claude automatically categorizes incoming tickets,
 assigns a priority, and drafts a suggested first response based on your knowledge base.
