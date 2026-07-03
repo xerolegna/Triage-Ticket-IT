@@ -407,7 +407,7 @@
   .category-showcase { margin-top: 16px; }
   .cycle-stage {
     position: relative;
-    height: 140px;
+    height: 180px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -430,11 +430,9 @@
   .cycle-item:nth-child(5) { animation-delay: 8s; }
 
   .cycle-item .icon-badge {
-    width: 68px; height: 68px; border-radius: 50%; flex: none;
     display: flex; align-items: center; justify-content: center;
-    color: #fff;
   }
-  .cycle-item .icon-badge svg { width: 30px; height: 30px; }
+  .cycle-item .icon-badge svg { width: 108px; height: 108px; }
   .cycle-item .label {
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.78rem;
@@ -444,15 +442,11 @@
     letter-spacing: 0.05em;
   }
 
-  .cycle-item.hardware .icon-badge { background: var(--chart-1); }
-  .cycle-item.software .icon-badge { background: var(--chart-2); }
-  .cycle-item.network .icon-badge { background: var(--chart-3); }
-  .cycle-item.access .icon-badge { background: var(--chart-5); }
-  .cycle-item.security .icon-badge { background: var(--chart-6); }
-
-  .cycle-item.network .icon-badge svg path:nth-child(1) { animation: ring-ping 1.8s ease-in-out infinite; }
-  .cycle-item.network .icon-badge svg path:nth-child(2) { animation: ring-ping 1.8s ease-in-out infinite 0.25s; }
-  .cycle-item.network .icon-badge svg path:nth-child(3) { animation: ring-ping 1.8s ease-in-out infinite 0.5s; }
+  .cycle-item.hardware .icon-badge { color: var(--chart-1); }
+  .cycle-item.software .icon-badge { color: var(--chart-2); }
+  .cycle-item.network .icon-badge { color: var(--chart-3); }
+  .cycle-item.access .icon-badge { color: var(--chart-5); }
+  .cycle-item.security .icon-badge { color: var(--chart-6); }
 
   @keyframes cycle-fade {
     0%   { opacity: 0; transform: scale(0.8); }
@@ -462,8 +456,6 @@
     20%  { opacity: 0; transform: scale(0.8); }
     100% { opacity: 0; }
   }
-  @keyframes ring-ping { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
-
   @media (prefers-reduced-motion: reduce) {
     .cycle-item { animation: none !important; opacity: 1 !important; }
     .cycle-item:not(:first-child) { display: none; }
@@ -599,49 +591,61 @@
       <div class="cycle-stage">
         <div class="cycle-item hardware">
           <span class="icon-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
+            <svg viewBox="0 0 64 64">
+              <rect x="6" y="8" width="52" height="36" rx="8" fill="currentColor"></rect>
+              <rect x="13" y="15" width="38" height="22" rx="4" fill="var(--surface)"></rect>
+              <circle cx="24" cy="26" r="2.6" fill="currentColor"></circle>
+              <circle cx="40" cy="26" r="2.6" fill="currentColor"></circle>
+              <path d="M27 31.5q5 4 10 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+              <rect x="26" y="44" width="12" height="6" fill="currentColor"></rect>
+              <rect x="17" y="50" width="30" height="5" rx="2.5" fill="currentColor"></rect>
             </svg>
           </span>
           <span class="label">Hardware</span>
         </div>
         <div class="cycle-item software">
           <span class="icon-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
+            <svg viewBox="0 0 64 64">
+              <rect x="8" y="8" width="48" height="48" rx="16" fill="currentColor"></rect>
+              <circle cx="24" cy="28" r="3" fill="var(--surface)"></circle>
+              <circle cx="40" cy="28" r="3" fill="var(--surface)"></circle>
+              <path d="M23 39q9 7 18 0" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" fill="none"></path>
             </svg>
           </span>
           <span class="label">Software</span>
         </div>
         <div class="cycle-item network">
           <span class="icon-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-              <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-              <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            <svg viewBox="0 0 64 64">
+              <path d="M18 30a14 14 0 0 1 28 0" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+              <rect x="8" y="30" width="48" height="22" rx="9" fill="currentColor"></rect>
+              <circle cx="24" cy="41" r="2.6" fill="var(--surface)"></circle>
+              <circle cx="40" cy="41" r="2.6" fill="var(--surface)"></circle>
+              <path d="M27 46.5q5 3.5 10 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
             </svg>
           </span>
           <span class="label">Network</span>
         </div>
         <div class="cycle-item access">
           <span class="icon-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="7" cy="15" r="4"></circle>
-              <path d="M10.5 11.5L21 1"></path>
-              <path d="M15 6l3 3"></path>
-              <path d="M18 3l3 3"></path>
+            <svg viewBox="0 0 64 64">
+              <circle cx="23" cy="32" r="15" fill="currentColor"></circle>
+              <rect x="34" y="27" width="26" height="9" rx="4.5" fill="currentColor"></rect>
+              <rect x="48" y="34" width="7" height="11" fill="currentColor"></rect>
+              <circle cx="18" cy="28" r="2.6" fill="var(--surface)"></circle>
+              <circle cx="27" cy="28" r="2.6" fill="var(--surface)"></circle>
+              <path d="M17 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
             </svg>
           </span>
           <span class="label">Access</span>
         </div>
         <div class="cycle-item security">
           <span class="icon-badge">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <svg viewBox="0 0 64 64">
+              <path d="M32 6 L54 14 V29 C54 45 44 54 32 58 C20 54 10 45 10 29 V14 Z" fill="currentColor"></path>
+              <circle cx="25" cy="28" r="2.6" fill="var(--surface)"></circle>
+              <circle cx="39" cy="28" r="2.6" fill="var(--surface)"></circle>
+              <path d="M26 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
             </svg>
           </span>
           <span class="label">Security</span>
