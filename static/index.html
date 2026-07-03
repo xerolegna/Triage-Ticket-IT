@@ -401,6 +401,54 @@
     border-radius: 14px;
   }
 
+  .category-showcase { margin-top: 16px; }
+  .category-showcase .tiles {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+  }
+  .cat-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 64px;
+  }
+  .cat-tile .icon-badge {
+    width: 52px; height: 52px; border-radius: 50%; flex: none;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+  }
+  .cat-tile .icon-badge svg { width: 24px; height: 24px; }
+  .cat-tile span {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.68rem;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+  @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+  @keyframes ring-ping { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  .cat-tile.hardware .icon-badge { background: var(--chart-1); animation: float-y 3s ease-in-out infinite; }
+  .cat-tile.software .icon-badge { background: var(--chart-2); animation: pulse-scale 2.4s ease-in-out infinite; animation-delay: 0.15s; }
+  .cat-tile.network .icon-badge svg path:nth-child(1) { animation: ring-ping 1.8s ease-in-out infinite; }
+  .cat-tile.network .icon-badge svg path:nth-child(2) { animation: ring-ping 1.8s ease-in-out infinite 0.25s; }
+  .cat-tile.network .icon-badge svg path:nth-child(3) { animation: ring-ping 1.8s ease-in-out infinite 0.5s; }
+  .cat-tile.network .icon-badge { background: var(--chart-3); }
+  .cat-tile.access .icon-badge { background: var(--chart-5); animation: wiggle 2.6s ease-in-out infinite; animation-delay: 0.3s; }
+  .cat-tile.security .icon-badge { background: var(--chart-6); animation: pulse-scale 2.1s ease-in-out infinite; animation-delay: 0.45s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cat-tile .icon-badge, .cat-tile .icon-badge svg path { animation: none !important; }
+  }
+
   footer {
     text-align: center;
     color: var(--ink-muted);
@@ -524,6 +572,71 @@
     </h2>
     <div class="queue" id="queue">
       <div class="locked">Staff login required to view the ticket queue.</div>
+    </div>
+
+    <div class="panel category-showcase">
+      <h2>
+        <span class="icon-circle">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+          </svg>
+        </span>
+        What Claude triages
+      </h2>
+      <div class="tiles">
+        <div class="cat-tile hardware">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </span>
+          <span>Hardware</span>
+        </div>
+        <div class="cat-tile software">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+          </span>
+          <span>Software</span>
+        </div>
+        <div class="cat-tile network">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
+              <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
+              <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+              <line x1="12" y1="20" x2="12.01" y2="20"></line>
+            </svg>
+          </span>
+          <span>Network</span>
+        </div>
+        <div class="cat-tile access">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="7" cy="15" r="4"></circle>
+              <path d="M10.5 11.5L21 1"></path>
+              <path d="M15 6l3 3"></path>
+              <path d="M18 3l3 3"></path>
+            </svg>
+          </span>
+          <span>Access</span>
+        </div>
+        <div class="cat-tile security">
+          <span class="icon-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </span>
+          <span>Security</span>
+        </div>
+      </div>
     </div>
   </section>
 
