@@ -165,12 +165,15 @@
     grid-template-columns: minmax(280px, 360px) 1fr;
     gap: clamp(14px, 3vw, 24px);
     max-width: 1100px;
-    margin: -56px auto clamp(14px, 3vw, 24px);
+    margin: clamp(14px, 3vw, 24px) auto;
     padding: 0 clamp(14px, 4vw, 24px);
     position: relative;
     z-index: 2;
   }
-  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; margin-top: -40px; } }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  .hero-float { margin-top: -56px; }
+  @media (max-width: 860px) { .hero-float { margin-top: -40px; } }
 
   .panel {
     background: var(--surface);
@@ -513,7 +516,7 @@
 
 <div class="layout">
 
-  <section class="panel">
+  <section class="panel hero-float">
     <h2>
       <span class="icon-circle">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
