@@ -156,7 +156,12 @@
     background: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.16), transparent 45%);
     pointer-events: none;
   }
-  .hero-inner { max-width: 1100px; margin: 0 auto; position: relative; }
+  .hero-inner {
+    max-width: 1100px; margin: 0 auto; position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+  }
+  .hero-text { flex: 1 1 320px; min-width: 0; }
   .hero-inner h2 { color: #fff; font-size: clamp(1.15rem, 2.4vw, 1.5rem); font-weight: 700; margin-bottom: 6px; }
   .hero-inner p { color: rgba(255, 255, 255, 0.82); font-size: 0.9rem; max-width: 520px; }
 
@@ -404,10 +409,11 @@
     border-radius: 14px;
   }
 
-  .category-showcase { margin-top: 16px; }
   .cycle-stage {
     position: relative;
-    height: 180px;
+    width: 160px;
+    height: 160px;
+    flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -437,7 +443,7 @@
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--ink-secondary);
+    color: rgba(255, 255, 255, 0.85);
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
@@ -501,8 +507,73 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <h2>IT support desk</h2>
-    <p>Submit a ticket and get an instant AI-drafted response — staff triage, track, and resolve it all here at Patchworkz!!</p>
+    <div class="hero-text">
+      <h2>IT support desk</h2>
+      <p>Submit a ticket and get an instant AI-drafted response — staff triage, track, and resolve it all here at Patchworkz!!</p>
+    </div>
+    <div class="cycle-stage">
+      <div class="cycle-item hardware">
+        <span class="icon-badge">
+          <svg viewBox="0 0 64 64">
+            <rect x="6" y="8" width="52" height="36" rx="8" fill="currentColor"></rect>
+            <rect x="13" y="15" width="38" height="22" rx="4" fill="var(--surface)"></rect>
+            <circle cx="24" cy="26" r="2.6" fill="currentColor"></circle>
+            <circle cx="40" cy="26" r="2.6" fill="currentColor"></circle>
+            <path d="M27 31.5q5 4 10 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+            <rect x="26" y="44" width="12" height="6" fill="currentColor"></rect>
+            <rect x="17" y="50" width="30" height="5" rx="2.5" fill="currentColor"></rect>
+          </svg>
+        </span>
+        <span class="label">Hardware</span>
+      </div>
+      <div class="cycle-item software">
+        <span class="icon-badge">
+          <svg viewBox="0 0 64 64">
+            <rect x="8" y="8" width="48" height="48" rx="16" fill="currentColor"></rect>
+            <circle cx="24" cy="28" r="3" fill="var(--surface)"></circle>
+            <circle cx="40" cy="28" r="3" fill="var(--surface)"></circle>
+            <path d="M23 39q9 7 18 0" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="label">Software</span>
+      </div>
+      <div class="cycle-item network">
+        <span class="icon-badge">
+          <svg viewBox="0 0 64 64">
+            <path d="M18 30a14 14 0 0 1 28 0" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
+            <rect x="8" y="30" width="48" height="22" rx="9" fill="currentColor"></rect>
+            <circle cx="24" cy="41" r="2.6" fill="var(--surface)"></circle>
+            <circle cx="40" cy="41" r="2.6" fill="var(--surface)"></circle>
+            <path d="M27 46.5q5 3.5 10 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="label">Network</span>
+      </div>
+      <div class="cycle-item access">
+        <span class="icon-badge">
+          <svg viewBox="0 0 64 64">
+            <circle cx="23" cy="32" r="15" fill="currentColor"></circle>
+            <rect x="34" y="27" width="26" height="9" rx="4.5" fill="currentColor"></rect>
+            <rect x="48" y="34" width="7" height="11" fill="currentColor"></rect>
+            <circle cx="18" cy="28" r="2.6" fill="var(--surface)"></circle>
+            <circle cx="27" cy="28" r="2.6" fill="var(--surface)"></circle>
+            <path d="M17 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="label">Access</span>
+      </div>
+      <div class="cycle-item security">
+        <span class="icon-badge">
+          <svg viewBox="0 0 64 64">
+            <path d="M32 6 L54 14 V29 C54 45 44 54 32 58 C20 54 10 45 10 29 V14 Z" fill="currentColor"></path>
+            <circle cx="25" cy="28" r="2.6" fill="var(--surface)"></circle>
+            <circle cx="39" cy="28" r="2.6" fill="var(--surface)"></circle>
+            <path d="M26 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
+          </svg>
+        </span>
+        <span class="label">Security</span>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -585,72 +656,6 @@
     </h2>
     <div class="queue" id="queue">
       <div class="locked">Staff login required to view the ticket queue.</div>
-    </div>
-
-    <div class="panel category-showcase">
-      <div class="cycle-stage">
-        <div class="cycle-item hardware">
-          <span class="icon-badge">
-            <svg viewBox="0 0 64 64">
-              <rect x="6" y="8" width="52" height="36" rx="8" fill="currentColor"></rect>
-              <rect x="13" y="15" width="38" height="22" rx="4" fill="var(--surface)"></rect>
-              <circle cx="24" cy="26" r="2.6" fill="currentColor"></circle>
-              <circle cx="40" cy="26" r="2.6" fill="currentColor"></circle>
-              <path d="M27 31.5q5 4 10 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
-              <rect x="26" y="44" width="12" height="6" fill="currentColor"></rect>
-              <rect x="17" y="50" width="30" height="5" rx="2.5" fill="currentColor"></rect>
-            </svg>
-          </span>
-          <span class="label">Hardware</span>
-        </div>
-        <div class="cycle-item software">
-          <span class="icon-badge">
-            <svg viewBox="0 0 64 64">
-              <rect x="8" y="8" width="48" height="48" rx="16" fill="currentColor"></rect>
-              <circle cx="24" cy="28" r="3" fill="var(--surface)"></circle>
-              <circle cx="40" cy="28" r="3" fill="var(--surface)"></circle>
-              <path d="M23 39q9 7 18 0" stroke="var(--surface)" stroke-width="3" stroke-linecap="round" fill="none"></path>
-            </svg>
-          </span>
-          <span class="label">Software</span>
-        </div>
-        <div class="cycle-item network">
-          <span class="icon-badge">
-            <svg viewBox="0 0 64 64">
-              <path d="M18 30a14 14 0 0 1 28 0" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" fill="none"></path>
-              <rect x="8" y="30" width="48" height="22" rx="9" fill="currentColor"></rect>
-              <circle cx="24" cy="41" r="2.6" fill="var(--surface)"></circle>
-              <circle cx="40" cy="41" r="2.6" fill="var(--surface)"></circle>
-              <path d="M27 46.5q5 3.5 10 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
-            </svg>
-          </span>
-          <span class="label">Network</span>
-        </div>
-        <div class="cycle-item access">
-          <span class="icon-badge">
-            <svg viewBox="0 0 64 64">
-              <circle cx="23" cy="32" r="15" fill="currentColor"></circle>
-              <rect x="34" y="27" width="26" height="9" rx="4.5" fill="currentColor"></rect>
-              <rect x="48" y="34" width="7" height="11" fill="currentColor"></rect>
-              <circle cx="18" cy="28" r="2.6" fill="var(--surface)"></circle>
-              <circle cx="27" cy="28" r="2.6" fill="var(--surface)"></circle>
-              <path d="M17 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
-            </svg>
-          </span>
-          <span class="label">Access</span>
-        </div>
-        <div class="cycle-item security">
-          <span class="icon-badge">
-            <svg viewBox="0 0 64 64">
-              <path d="M32 6 L54 14 V29 C54 45 44 54 32 58 C20 54 10 45 10 29 V14 Z" fill="currentColor"></path>
-              <circle cx="25" cy="28" r="2.6" fill="var(--surface)"></circle>
-              <circle cx="39" cy="28" r="2.6" fill="var(--surface)"></circle>
-              <path d="M26 36.5q6 4 12 0" stroke="var(--surface)" stroke-width="2.6" stroke-linecap="round" fill="none"></path>
-            </svg>
-          </span>
-          <span class="label">Security</span>
-        </div>
-      </div>
     </div>
   </section>
 
