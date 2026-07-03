@@ -402,51 +402,69 @@
   }
 
   .category-showcase { margin-top: 16px; }
-  .category-showcase .tiles {
+  .cycle-stage {
+    position: relative;
+    height: 140px;
     display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding-top: 4px;
+    align-items: center;
+    justify-content: center;
   }
-  .cat-tile {
+  .cycle-item {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    flex: 1;
-    min-width: 64px;
+    justify-content: center;
+    gap: 10px;
+    opacity: 0;
+    animation: cycle-fade 10s ease-in-out infinite;
   }
-  .cat-tile .icon-badge {
-    width: 52px; height: 52px; border-radius: 50%; flex: none;
+  .cycle-item:nth-child(1) { animation-delay: 0s; }
+  .cycle-item:nth-child(2) { animation-delay: 2s; }
+  .cycle-item:nth-child(3) { animation-delay: 4s; }
+  .cycle-item:nth-child(4) { animation-delay: 6s; }
+  .cycle-item:nth-child(5) { animation-delay: 8s; }
+
+  .cycle-item .icon-badge {
+    width: 68px; height: 68px; border-radius: 50%; flex: none;
     display: flex; align-items: center; justify-content: center;
     color: #fff;
   }
-  .cat-tile .icon-badge svg { width: 24px; height: 24px; }
-  .cat-tile span {
+  .cycle-item .icon-badge svg { width: 30px; height: 30px; }
+  .cycle-item .label {
     font-family: "IBM Plex Mono", monospace;
-    font-size: 0.68rem;
-    color: var(--ink-muted);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--ink-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
   }
 
-  @keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-  @keyframes pulse-scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
-  @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-10deg); } 75% { transform: rotate(10deg); } }
+  .cycle-item.hardware .icon-badge { background: var(--chart-1); }
+  .cycle-item.software .icon-badge { background: var(--chart-2); }
+  .cycle-item.network .icon-badge { background: var(--chart-3); }
+  .cycle-item.access .icon-badge { background: var(--chart-5); }
+  .cycle-item.security .icon-badge { background: var(--chart-6); }
+
+  .cycle-item.network .icon-badge svg path:nth-child(1) { animation: ring-ping 1.8s ease-in-out infinite; }
+  .cycle-item.network .icon-badge svg path:nth-child(2) { animation: ring-ping 1.8s ease-in-out infinite 0.25s; }
+  .cycle-item.network .icon-badge svg path:nth-child(3) { animation: ring-ping 1.8s ease-in-out infinite 0.5s; }
+
+  @keyframes cycle-fade {
+    0%   { opacity: 0; transform: scale(0.8); }
+    4%   { opacity: 1; transform: scale(1); }
+    10%  { transform: scale(1.05); }
+    16%  { opacity: 1; transform: scale(1); }
+    20%  { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 0; }
+  }
   @keyframes ring-ping { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-  .cat-tile.hardware .icon-badge { background: var(--chart-1); animation: float-y 3s ease-in-out infinite; }
-  .cat-tile.software .icon-badge { background: var(--chart-2); animation: pulse-scale 2.4s ease-in-out infinite; animation-delay: 0.15s; }
-  .cat-tile.network .icon-badge svg path:nth-child(1) { animation: ring-ping 1.8s ease-in-out infinite; }
-  .cat-tile.network .icon-badge svg path:nth-child(2) { animation: ring-ping 1.8s ease-in-out infinite 0.25s; }
-  .cat-tile.network .icon-badge svg path:nth-child(3) { animation: ring-ping 1.8s ease-in-out infinite 0.5s; }
-  .cat-tile.network .icon-badge { background: var(--chart-3); }
-  .cat-tile.access .icon-badge { background: var(--chart-5); animation: wiggle 2.6s ease-in-out infinite; animation-delay: 0.3s; }
-  .cat-tile.security .icon-badge { background: var(--chart-6); animation: pulse-scale 2.1s ease-in-out infinite; animation-delay: 0.45s; }
-
   @media (prefers-reduced-motion: reduce) {
-    .cat-tile .icon-badge, .cat-tile .icon-badge svg path { animation: none !important; }
+    .cycle-item { animation: none !important; opacity: 1 !important; }
+    .cycle-item:not(:first-child) { display: none; }
+    .cycle-item .icon-badge svg path { animation: none !important; }
   }
 
   footer {
@@ -575,19 +593,8 @@
     </div>
 
     <div class="panel category-showcase">
-      <h2>
-        <span class="icon-circle">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7"></rect>
-            <rect x="14" y="3" width="7" height="7"></rect>
-            <rect x="14" y="14" width="7" height="7"></rect>
-            <rect x="3" y="14" width="7" height="7"></rect>
-          </svg>
-        </span>
-        What Claude triages
-      </h2>
-      <div class="tiles">
-        <div class="cat-tile hardware">
+      <div class="cycle-stage">
+        <div class="cycle-item hardware">
           <span class="icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="3" width="20" height="14" rx="2"></rect>
@@ -595,18 +602,18 @@
               <line x1="12" y1="17" x2="12" y2="21"></line>
             </svg>
           </span>
-          <span>Hardware</span>
+          <span class="label">Hardware</span>
         </div>
-        <div class="cat-tile software">
+        <div class="cycle-item software">
           <span class="icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="16 18 22 12 16 6"></polyline>
               <polyline points="8 6 2 12 8 18"></polyline>
             </svg>
           </span>
-          <span>Software</span>
+          <span class="label">Software</span>
         </div>
-        <div class="cat-tile network">
+        <div class="cycle-item network">
           <span class="icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
@@ -615,9 +622,9 @@
               <line x1="12" y1="20" x2="12.01" y2="20"></line>
             </svg>
           </span>
-          <span>Network</span>
+          <span class="label">Network</span>
         </div>
-        <div class="cat-tile access">
+        <div class="cycle-item access">
           <span class="icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="7" cy="15" r="4"></circle>
@@ -626,15 +633,15 @@
               <path d="M18 3l3 3"></path>
             </svg>
           </span>
-          <span>Access</span>
+          <span class="label">Access</span>
         </div>
-        <div class="cat-tile security">
+        <div class="cycle-item security">
           <span class="icon-badge">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
           </span>
-          <span>Security</span>
+          <span class="label">Security</span>
         </div>
       </div>
     </div>
