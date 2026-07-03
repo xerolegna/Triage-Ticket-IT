@@ -201,6 +201,31 @@
     color: var(--ink-muted);
     min-height: 1.2em;
   }
+  .confirm-box {
+    background: var(--surface-2);
+    border: 1px dashed var(--line);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: var(--ink);
+  }
+  .confirm-box .filed {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.78rem;
+    color: var(--ink-secondary);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .confirm-box .label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 4px;
+  }
 
   .queue { display: grid; gap: 12px; }
   .ticket {
@@ -609,8 +634,11 @@ form.addEventListener("submit", async (e) => {
       throw new Error(err.detail?.[0]?.msg || "Submission failed");
     }
     const t = await res.json();
-    statusMsg.textContent =
-      `Filed as TKT-${String(t.id).padStart(4, "0")} · ${t.priority} · ${t.category}`;
+    const filed = `Filed as TKT-${String(t.id).padStart(4, "0")} · ${esc(t.priority)} · ${esc(t.category)}`;
+    const suggestion = t.suggested_response
+      ? `<span class="label">Suggested first response</span><p>${esc(t.suggested_response)}</p>`
+      : `<span class="label">No AI suggestion yet</span><p>Your ticket has been filed for manual review.</p>`;
+    statusMsg.innerHTML = `<div class="confirm-box"><span class="filed">${filed}</span>${suggestion}</div>`;
     form.reset();
     await loadTickets();
   } catch (err) {
