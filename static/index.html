@@ -107,6 +107,7 @@
 
   /* Reset & Basics */
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; }
   body {
     background: var(--bg-page);
     color: var(--text-primary);
@@ -173,11 +174,18 @@
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+    flex-wrap: wrap;
+    row-gap: 12px;
   }
   .brand {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
+  }
+  @media (max-width: 720px) {
+    .navbar { justify-content: center; }
+    .ai-status { display: none; }
   }
   .brand-logo {
     width: 32px;
