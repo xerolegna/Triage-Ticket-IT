@@ -13,17 +13,40 @@ Routes:
 
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, EmailStr, Field
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
 
 from app import auth, database
 from app.claude_service import triage_ticket
 from app.email_service import send_ticket_notification
 
+
+def get_client_ip(request: Request) -> str:
+    """Real visitor IP behind a proxy (Render), falling back to the raw socket."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+limiter = Limiter(key_func=get_client_ip)
+
 app = FastAPI(title="Patchworkz", version="0.1.0")
+app.state.limiter = limiter
+
+
+@app.exception_handler(RateLimitExceeded)
+def rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    return JSONResponse(
+        status_code=429,
+        content={"detail": "Too many requests — please slow down and try again shortly."},
+    )
+
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 
@@ -55,7 +78,8 @@ class Token(BaseModel):
 
 
 @app.post("/api/auth/register", status_code=201)
-def register(agent: AgentIn) -> dict:
+@limiter.limit("5/minute")
+def register(request: Request, agent: AgentIn) -> dict:
     if database.get_agent_by_username(agent.username) is not None:
         raise HTTPException(status_code=409, detail="Username already taken")
     created = database.create_agent(agent.username, auth.hash_password(agent.password))
@@ -63,7 +87,8 @@ def register(agent: AgentIn) -> dict:
 
 
 @app.post("/api/auth/login", response_model=Token)
-def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
+@limiter.limit("10/minute")
+def login(request: Request, form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
     agent = auth.authenticate_agent(form_data.username, form_data.password)
     if agent is None:
         raise HTTPException(status_code=401, detail="Incorrect username or password")
@@ -71,7 +96,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends()) -> Token:
 
 
 @app.post("/api/tickets", status_code=201)
-def create_ticket(ticket: TicketIn) -> dict:
+@limiter.limit("5/minute")
+def create_ticket(request: Request, ticket: TicketIn) -> dict:
     triage = triage_ticket(
         ticket.requester_name, ticket.subject, ticket.description
     )
